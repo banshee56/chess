@@ -2,8 +2,8 @@ import chess
 
 
 class ChessGame:
-    def __init__(self, player1, player2):
-        self.board = chess.Board(fen="1k2r2r/ppp2Q2/3p3b/2nP3p/2PN4/6PB/PP3R1P/1K6 b - - 0 1")
+    def __init__(self, player1, player2, init_board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"):
+        self.board = chess.Board(fen=init_board)
         self.players = [player1, player2]
 
     def make_move(self):
@@ -18,8 +18,14 @@ class ChessGame:
             column_labels = "\n----------------\na b c d e f g h\n"
             board_str =  str(self.board) + column_labels
             print(board_str)
-            return True
-        return False
+
+            if self.board.outcome().termination.value == 1:
+                # game is over = True, has a winner = 1
+                return (True, 1)
+            # game is over = True, draw = 0
+            return (True, 0)
+        # game is not over
+        return (False, 0)
 
     def __str__(self):
 

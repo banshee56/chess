@@ -3,22 +3,53 @@ AI that plays chess
 
 ## How to Use
 
+### `ChessGame`
+
+I modified the class to allow the constructor to take an optional parameter, `init_board`, which can take a starting `fen` for the game board; otherwise, it uses the default `fen` used by the `chess` package:
+
+```Python
+Chess(player1, player2, init_board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+```
+
 ### `MinimaxAI`
 
-`MinimaxAi(chess.COLOR, depth)` takes 2 parameters:
-* `chess.COLOR` uses the `COLOR` class of the `chess` package. Please input the `chess.COLOR` of the AI.
+`MinimaxAi(depth)` takes 1 parameter, `depth`, which refers to the depth limit of the game tree search. It uses the `ChessGame` class to create a game board.
 
-    When `MinimaxAi` plays as white:
-    ```C
-    game = ChessGame(MinimaxAI(chess.WHITE, depth), player2)
-    ```
+#### Usage Example
 
-    When it plays as black:
-    ```C
-    game = ChessGame(player1, MinimaxAI(chess.BLACK, depth))
-    ```
+2 Minimax AIs playing against each other at different depth limits.
 
-* `depth` refers to the depth limit of the game tree search.
+```Python
+depth = 2
+player1 = MinimaxAI(depth)
+player2 = MinimaxAI(depth+1)
+
+game = ChessGame(player1, player2)
+
+while not game.is_game_over():
+    print(game)
+    game.make_move()
+```
+
+### `AlphaBetaAI`
+
+`AlphaBetaAi(depth)` takes 1 parameter, `depth`, which refers to the depth limit of the game tree search.
+
+#### Usage Example
+
+AlphaBeta and Minimax AIs playing against each other at the same depth limit.
+
+```Python
+depth = 2
+player1 = AlphaBetaAI(depth)
+player2 = MinimaxAI(depth)
+
+game = ChessGame(player1, player2)
+
+while not game.is_game_over():
+    print(game)
+    game.make_move()
+```
 
 ## Implementation Choices
 
