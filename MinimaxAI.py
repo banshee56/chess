@@ -1,7 +1,5 @@
 import chess
 from random import shuffle
-from Piece import Piece
-from time import time
 
 class State():
     def __init__(self, board):
@@ -161,7 +159,7 @@ class MinimaxAI():
             black_score += val
         
         # minimax is white
-        if self.color == 0:
+        if self.color == chess.WHITE:
             score = white_score - black_score
 
         # it is black
@@ -205,10 +203,7 @@ class MinimaxAI():
 
     def max_value(self, state):
         if self.cutoff_test(state):
-            # before  = time()
             utility = self.evaluation_fn(state)
-            # after = time()
-            # print(after-before)
             return utility
         
         v = -float('inf')
@@ -222,16 +217,12 @@ class MinimaxAI():
 
     def min_value(self, state):
         if self.cutoff_test(state):
-            # before  = time()
             utility = self.evaluation_fn(state)
-            # after = time()
-            # print(after-before)
             return utility
         
         v = float('inf')
 
         for move in list(state.board.legal_moves):
-            # prev_piece = state.locations[move[:2]]
             self.make_move(state, move)
             v = min(v, self.max_value(state))
             self.undo_move(state)
@@ -239,19 +230,13 @@ class MinimaxAI():
         return v
 
     def make_move(self, state, move):
+        # made a move at a lower depth
+        # so increment depth
         state.depth += 1
         state.board.push(move)
 
-        # # update tracking stuff
-        # origin = move[:2]
-        # end = move[2:]
-        
-        # piece = state.locations[origin]
-        # state.locations[origin] = None
-
-        # state.locations[end] = piece
-
     def undo_move(self, state):
+        # undid move, so decrement depth
         state.board.pop()
         state.depth -= 1
 
@@ -259,27 +244,36 @@ class MinimaxAI():
         white = []
         black = []
 
+        # going through the characters on the board to figure out which side has which pieces left
         row = 8
         col = 1
         for char in str(state.board):
+            # go to first col
             if col > 8:
                 col = 1
 
+            # ignore
             if char == ' ':
                 continue
-
+            
+            # ignore empty square
             if char == '.':
                 col += 1
                 continue
+
+            # go to next row
             if char == '\n':
                 row -= 1
                 continue
 
             # white pieces are capital letters with ord() values < 97 ('a')
             if ord(char) < 97:
-                white.append(char)       
+                white.append(char)    
+            # char is a black piece otherwise   
             else:
                 black.append(char)
+
+            # go to next col
             col += 1
 
         return (white, black)
