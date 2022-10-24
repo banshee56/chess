@@ -96,9 +96,11 @@ class AlphaBetaAI():
 
     # checks if the state is a terminal state or not
     def terminal_test(self, state):
-        if state.board.outcome():
-            return True
-        return False
+        # if there are legal moves left
+        if list(state.board.legal_moves):
+            return False
+        # otherwise, we reached the end
+        return True
 
     # cutoff when we reach terminal state with a win or draw
     # or when we hit max depth
