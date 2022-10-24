@@ -91,12 +91,21 @@ class State():
         # self.white_pieces = white
 
 class MinimaxAI():
-    def __init__(self, color, depth):
-        self.color = color
+    def __init__(self, depth):
+        # color defaulted to white
+        self.color = True
         self.depth_limit =  depth
 
     def choose_move(self, board):
         state = State(board)
+
+         # set the AI's color
+        fen = str(board.fen()).split()
+        if fen[-5] == 'w':
+            self.color = True
+        else:
+            self.color = False
+        
         move = self.minimax_decision(state)
         print("Minimax AI recommending move " + str(move))
         return move
@@ -115,10 +124,6 @@ class MinimaxAI():
             # AI is black
             # there was a checkmate, and self.color == chess.BLACK == False
             if outcome.termination.value == 1 and outcome.winner == self.color:
-                print(state.board)
-                print(outcome)
-                print('cause 2')
-                print('---------')
                 return 78
 
             # losses

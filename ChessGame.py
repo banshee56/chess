@@ -14,7 +14,12 @@ class ChessGame:
         self.board.push(move)  # Make the move
 
     def is_game_over(self):
-        return self.board.is_game_over()
+        if self.board.is_game_over():
+            column_labels = "\n----------------\na b c d e f g h\n"
+            board_str =  str(self.board) + column_labels
+            print(board_str)
+            return True
+        return False
 
     def __str__(self):
 

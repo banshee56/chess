@@ -7,13 +7,22 @@ class State():
         self.depth = 0
 
 class AlphaBetaAI():
-    def __init__(self, color, depth):
-        self.color = color
+    def __init__(self, depth):
+        # color defaulted to white
+        self.color = True
         self.depth_limit =  depth
 
     def choose_move(self, board):
         state = State(board)
-        move = self.minimax_decision(state)
+
+        # set the AI's color
+        fen = str(board.fen()).split()
+        if fen[-5] == 'w':
+            self.color = True
+        else:
+            self.color = False
+
+        move = self.alphabeta_decision(state)
         print("Alpha Beta AI recommending move " + str(move))
         return move
 
@@ -119,7 +128,7 @@ class AlphaBetaAI():
         for move in moves:
             self.make_move(state, move)
 
-            utility = self.min_value(state)
+            utility = self.min_value(state, -float('inf'), float('inf'))
             if utility >  arg_max:
                 arg_max = utility
                 chosen_move = move
@@ -141,7 +150,8 @@ class AlphaBetaAI():
             v = max(v, self.min_value(state, alpha, beta))
             self.undo_move(state)
 
-            if v >= beta: return v
+            if v >= beta:
+                return v
 
             alpha = max(alpha, v)
 
@@ -159,7 +169,8 @@ class AlphaBetaAI():
             v = min(v, self.max_value(state, alpha, beta))
             self.undo_move(state)
 
-            if v <= alpha: return v
+            if v <= alpha: 
+                return v
 
             beta = min(beta, v)
 

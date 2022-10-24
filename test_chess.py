@@ -12,7 +12,7 @@ import sys
 
 
 
-player2 = MinimaxAI(chess.BLACK, 3)
+player2 = AlphaBetaAI(2)
 player1 = HumanPlayer()
 
 game = ChessGame(player1, player2)
@@ -28,5 +28,3 @@ while not game.is_game_over():
 # print(board)
 
 # print(ord('A'))
-
-# print(hash(str(game.board)))
