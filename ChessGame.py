@@ -3,7 +3,7 @@ import chess
 
 class ChessGame:
     def __init__(self, player1, player2):
-        self.board = chess.Board(fen="1B2q1B1/2n1kPR1/R1b2n1Q/2p1r3/8/3Q2B1/4p3/4K3 w - - 0 1")
+        self.board = chess.Board(fen="1k2r2r/ppp2Q2/3p3b/2nP3p/2PN4/6PB/PP3R1P/1K6 b - - 0 1")
         self.players = [player1, player2]
 
     def make_move(self):

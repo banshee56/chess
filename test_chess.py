@@ -12,8 +12,8 @@ import sys
 
 
 
-player1 = MinimaxAI(chess.WHITE, 1)
-player2 = HumanPlayer()
+player2 = MinimaxAI(chess.BLACK, 3)
+player1 = HumanPlayer()
 
 game = ChessGame(player1, player2)
 
@@ -23,6 +23,7 @@ while not game.is_game_over():
 
 # board = chess.Board("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4")
 
+# print(board.outcome())
 # board = chess.Board()
 # print(board)
 

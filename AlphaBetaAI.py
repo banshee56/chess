@@ -19,20 +19,30 @@ class AlphaBetaAI():
 
     def evaluation_fn(self, state):
         # if terminal, win > draw > loss -> 0
+        
         if self.terminal_test(state):
-            if self.color == chess.WHITE:
-                enemy = chess.BLACK
-            else:
-                enemy = chess.WHITE
-
             outcome = state.board.outcome()
 
-            # AI won
-            if outcome.winner == self.color:
+            # wins
+            # AI is white
+            # outcome.winner == chess.WHITE == self.color == True
+            if outcome.winner and self.color:
                 return 78
-            # loss
-            elif outcome.winner == enemy:
+            # AI is black
+            # there was a checkmate, and self.color == chess.BLACK == False
+            if outcome.termination.value == 1 and outcome.winner == self.color:
+                return 78
+
+            # losses
+            # AI is black
+            # the enemy, white, won 
+            if outcome.winner and not self.color:
                 return -78
+            # AI is white
+            # the enemy, black, won
+            if outcome.termination.value == 1 and not outcome.winner and self.color:
+                return -78
+
             # draw
             else:
                 return 0
