@@ -1,6 +1,5 @@
 import chess
 
-
 class ChessGame:
     def __init__(self, player1, player2, init_board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"):
         self.board = chess.Board(fen=init_board)
@@ -19,11 +18,13 @@ class ChessGame:
             board_str =  str(self.board) + column_labels
             print(board_str)
 
+            # ended in checkmate
             if self.board.outcome().termination.value == 1:
                 # game is over = True, has a winner = 1
                 return (True, 1)
             # game is over = True, draw = 0
             return (True, 0)
+
         # game is not over
         return (False, 0)
 

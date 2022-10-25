@@ -1,3 +1,9 @@
+# Name: Bansharee Ireen
+# 
+# AlphaBetaAI - the alpha beta pruning implementation of minimax
+# cosc76
+# oct 24 2022
+
 import chess
 from random import shuffle
 
@@ -12,6 +18,7 @@ class AlphaBetaAI():
         self.color = True
         self.depth_limit =  depth
 
+    # main method to call the driver, which calls the min and max functions
     def choose_move(self, board):
         state = State(board)
 
@@ -118,6 +125,7 @@ class AlphaBetaAI():
             return True
         return False
 
+    # the main driver for min and max values
     def alphabeta_decision(self, state):
         arg_max = -float('inf')
         chosen_move = None
@@ -125,6 +133,7 @@ class AlphaBetaAI():
         moves = list(state.board.legal_moves)
         shuffle(moves)
 
+        # getting the move which produces the max utility
         for move in moves:
             self.make_move(state, move)
 
@@ -135,9 +144,10 @@ class AlphaBetaAI():
             
             self.undo_move(state)
         
-        print(arg_max)
+        print("Chosen move has utility: "+str(arg_max))
         return chosen_move
 
+    # returns max utility
     def max_value(self, state, alpha, beta):
         if self.cutoff_test(state):
             utility = self.evaluation_fn(state)
@@ -145,6 +155,7 @@ class AlphaBetaAI():
         
         v = -float('inf')
 
+        # get the max utility from all legal moves
         for move in list(state.board.legal_moves):
             self.make_move(state, move)
             v = max(v, self.min_value(state, alpha, beta))
@@ -157,6 +168,7 @@ class AlphaBetaAI():
 
         return v
 
+    # returns min utility
     def min_value(self, state, alpha, beta):
         if self.cutoff_test(state):
             utility = self.evaluation_fn(state)

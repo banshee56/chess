@@ -1,3 +1,9 @@
+# Name: Bansharee Ireen
+# 
+# MinimaxAI - the minimax implementation
+# cosc76
+# oct 24 2022
+
 import chess
 from random import shuffle
 
@@ -6,100 +12,17 @@ class State():
         self.board = board
         self.depth = 0
 
-        # # to quickly check what piece is at a location we want to move to
-        # letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        # nums = ['1', '2', '3', '4', '5', '6', '7', '8']
-        # locations = {}
-        # # initialize
-        # for letter in letters:
-        #     for num in nums:
-        #         locations[str(letter+num)] = None
-
-        # # a collection of pieces
-        # black = []
-        # white = []
-
-        # # mapping locations to the occupying pieces
-        # row = 8
-        # col = 1 # = ord('a')-96 
-        # for char in str(board):
-        #     if col > 8:
-        #         col = 1
-
-        #     if char == ' ':
-        #         continue
-
-        #     if char == '.':
-        #         col += 1
-        #         continue
-        #     if char == '\n':
-        #         row -= 1
-        #         continue
-
-        #     # white pieces are capital letters with ord() values < 97 ('a')
-        #     if ord(char) < 97:
-        #         white.append(char)
-
-        #         if char == 'P':
-        #             type = 0
-        #             val = 1
-        #         if char == 'N':
-        #             type = 1
-        #             val = 3
-        #         if char == 'B':
-        #             type = 2
-        #             val = 3
-        #         if char == 'R':
-        #             type = 3
-        #             val = 5
-        #         if char == 'Q':
-        #             type = 4
-        #             val = 9
-        #         if char == 'K':
-        #             type = 5
-        #             val = None
-
-        #         locations[str(chr(col+96))+str(row)] = Piece(type, val, 0, str(chr(col+96))+str(row))
-
-        #     else:
-        #         black.append(char)
-
-        #         if char == 'p':
-        #             type = 0
-        #             val = 1
-        #         if char == 'n':
-        #             type = 1
-        #             val = 3
-        #         if char == 'b':
-        #             type = 2
-        #             val = 3
-        #         if char == 'r':
-        #             type = 3
-        #             val = 5
-        #         if char == 'q':
-        #             type = 4
-        #             val = 9
-        #         if char == 'k':
-        #             type = 5
-        #             val = None
-
-        #         locations[str(chr(col+96))+str(row)] = Piece(type, val, 1, str(chr(col+96))+str(row))
-        #     col += 1
-
-        # self.locations = locations
-        # self.black_pieces = black
-        # self.white_pieces = white
-
 class MinimaxAI():
     def __init__(self, depth):
         # color defaulted to white
         self.color = True
         self.depth_limit =  depth
 
+    # main method to call the driver, which calls the min and max functions
     def choose_move(self, board):
         state = State(board)
 
-         # set the AI's color
+        # set the AI's color
         fen = str(board.fen()).split()
         if fen[-5] == 'w':
             self.color = True
@@ -202,6 +125,7 @@ class MinimaxAI():
             return True
         return False
 
+    # the main driver for min and max values
     def minimax_decision(self, state):
         arg_max = -float('inf')
         chosen_move = None
@@ -209,6 +133,7 @@ class MinimaxAI():
         moves = list(state.board.legal_moves)
         shuffle(moves)
 
+        # getting the move which produces the max utility
         for move in moves:
             self.make_move(state, move)
 
@@ -219,9 +144,10 @@ class MinimaxAI():
             
             self.undo_move(state)
         
-        print(arg_max)
+        print("Chosen move has utility: "+str(arg_max))
         return chosen_move
 
+    # returns max utility
     def max_value(self, state):
         if self.cutoff_test(state):
             utility = self.evaluation_fn(state)
@@ -229,6 +155,7 @@ class MinimaxAI():
         
         v = -float('inf')
 
+         # get the max utility from all legal moves
         for move in list(state.board.legal_moves):
             self.make_move(state, move)
             v = max(v, self.min_value(state))
@@ -236,6 +163,7 @@ class MinimaxAI():
 
         return v
 
+    # returns min utility
     def min_value(self, state):
         if self.cutoff_test(state):
             utility = self.evaluation_fn(state)
