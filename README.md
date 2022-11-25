@@ -1,5 +1,5 @@
 # chess-ai
-## Bansharee Ireen
+### Bansharee Ireen
 
 AI playing chess game by searching the chess game tree using a cut-off evaluation for quick responses.
 
